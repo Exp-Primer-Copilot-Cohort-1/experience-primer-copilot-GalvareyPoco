@@ -1,53 +1,25 @@
 // create web server
-// create a route for comments
-// create a form to submit comments
-// create a route to handle the form submission
-// create a route to display comments
-
-// create web server
 const express = require('express');
 const app = express();
-const path = require('path');
-const comments = [];
+const port = 3000;
 
-// create a route for comments
+// add static files
+app.use(express.static('public'));
+
+// add comments
 app.get('/comments', (req, res) => {
-  res.sendFile(path.join(__dirname, 'comments.html'));
+  res.send('Hello World!');
 });
 
-// create a form to submit comments
-app.post('/comments', (req, res) => {
-  comments.push(req.body.comment);
-  res.redirect('/comments');
+// start web server
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
 });
 
-// create a route to handle the form submission
-app.get('/comments', (req, res) => {
-  res.sendFile(path.join(__dirname, 'comments.html'));
-});
-
-// create a route to display comments
-app.get('/comments', (req, res) => {
-  res.json(comments);
-});
-
-app.listen(3000, () => {
-  console.log('Server is listening on port 3000');
-});
-
-// create comments.html
-// create a form to submit comments
-// create a route to display comments
-
-// create a form to submit comments
-// <form action="/comments" method="POST">
-//   <input type="text" name="comment">
-//   <button type="submit">Submit</button>
-// </form>
-
-// create a route to display comments
-// <ul>
-//   <% comments.forEach(comment => { %>
-//     <li><%= comment %></li>
-//   <% }) %>
-// </ul>
+// Path: comments.html
+// add comments
+fetch('/comments')
+  .then((response) => response.text())
+  .then((text) => {
+    document.getElementById('comments').innerHTML = text;
+  });
