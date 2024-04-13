@@ -1,13 +1,12 @@
-const express = require('express');
-const app = express();
+// Create web server
+var http = require('http'); // 1 - Import Node.js core module
 
-// Route handler for the root URL
-app.get('/', (req, res) => {
-  res.send('Hello, world!');
+var server = http.createServer(function (req, res) {   // 2 - creating server
+
+    //handle incomming requests here..
+
 });
 
-// Start the server
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+server.listen(5000); //3 - listen for any incoming requests
+
+console.log('Node.js web server at port 5000 is running..')
