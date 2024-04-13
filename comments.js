@@ -1,25 +1,33 @@
 // create web server
-const express = require('express');
-const app = express();
-const port = 3000;
+var express = require('express');
+var app = express();
+var bodyParser = require('body-parser');
+var fs = require('fs');
 
-// add static files
 app.use(express.static('public'));
+app.use(bodyParser.json());
 
-// add comments
-app.get('/comments', (req, res) => {
-  res.send('Hello World!');
+// handling GET request
+app.get('/comments', function(req, res){
+    fs.readFile('comments.json', function(err, data){
+        res.setHeader('Content-Type', 'application/json');
+        res.send(data);
+    });
 });
 
-// start web server
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+// handling POST request
+app.post('/comments', function(req, res){
+    fs.readFile('comments.json', function(err, data){
+        var comments = JSON.parse(data);
+        comments.push(req.body);
+        fs.writeFile('comments.json', JSON.stringify(comments, null, 4), function(err){
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify(comments));
+        });
+    });
 });
 
-// Path: comments.html
-// add comments
-fetch('/comments')
-  .then((response) => response.text())
-  .then((text) => {
-    document.getElementById('comments').innerHTML = text;
-  });
+// start server
+var server = app.listen(3000, function(){
+    console.log('Server is running at http://localhost:3000/');
+});
